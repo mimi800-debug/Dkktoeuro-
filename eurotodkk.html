@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Euro  DKK Rechner</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: #0099cc;
+        color: white;
+        text-align: center;
+        border-radius: 50%; /* rundes WearOS-Display */
+        overflow: hidden;
+    }
+    .converter {
+        width: 100%;
+        max-width: 280px;
+    }
+    .converter h1 {
+        font-size: 1.2em;
+        margin-bottom: 8px;
+    }
+    .display {
+        background: rgba(255,255,255,0.2);
+        padding: 8px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+    .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+    .keypad button {
+        background: white;
+        color: #0099cc;
+        font-size: 1.3em;
+        padding: 8px;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .keypad button:active {
+        background: #f0f0f0;
+    }
+    .mode-switch {
+        margin-top: 10px;
+        font-size: 0.9em;
+        color: #fff;
+    }
+</style>
+</head>
+<body>
+<div class="converter">
+    <h1>€  DKK</h1>
+    <div class="display" id="display">0</div>
+
+    <div class="keypad">
+        <button onclick="addNumber('1')">1</button>
+        <button onclick="addNumber('2')">2</button>
+        <button onclick="addNumber('3')">3</button>
+        <button onclick="addNumber('4')">4</button>
+        <button onclick="addNumber('5')">5</button>
+        <button onclick="addNumber('6')">6</button>
+        <button onclick="addNumber('7')">7</button>
+        <button onclick="addNumber('8')">8</button>
+        <button onclick="addNumber('9')">9</button>
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="addNumber('0')">0</button>
+        <button onclick="calculate()">OK</button>
+    </div>
+
+    <div class="mode-switch">
+        Modus: <span id="mode">EUR  DKK</span> 
+        <br><button onclick="switchMode()">Wechseln</button>
+    </div>
+</div>
+
+<script>
+    let inputValue = '';
+    let mode = 'EURtoDKK';
+    const rate = 7.46;
+
+    function addNumber(num) {
+        if (inputValue.length < 10) {
+            inputValue += num;
+            updateDisplay();
+        }
+    }
+
+    function clearDisplay() {
+        inputValue = '';
+        updateDisplay();
+    }
+
+    function updateDisplay(text) {
+        document.getElementById('display').textContent = text || (inputValue || '0');
+    }
+
+    function calculate() {
+        if (inputValue === '') return;
+        let value = parseFloat(inputValue);
+        let result = (mode === 'EURtoDKK') ? value * rate : value / rate;
+        updateDisplay(result.toFixed(2) + (mode === 'EURtoDKK' ? ' DKK' : ' EUR'));
+        inputValue = '';
+    }
+
+    function switchMode() {
+        mode = (mode === 'EURtoDKK') ? 'DKKtoEUR' : 'EURtoDKK';
+        document.getElementById('mode').textContent = (mode === 'EURtoDKK') ? 'EUR  DKK' : 'DKK  EUR';
+        clearDisplay();
+    }
+</script>
+</body>
+</html>
